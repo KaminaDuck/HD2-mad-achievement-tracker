@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { statKeys } from "./stats.ts";
 
-export const achievementCategorySchema = z.enum([
+const achievementCategorySchema = z.enum([
   "kills",
   "missions",
   "stratagems",
@@ -24,13 +24,11 @@ export const achievementSchema = z.object({
 
 export type Achievement = z.infer<typeof achievementSchema>;
 
-export const achievementProgressSchema = z.object({
-  achievementId: z.string(),
-  name: z.string(),
-  currentValue: z.number().int().nonnegative(),
-  threshold: z.number().int().positive(),
-  percent: z.number().min(0).max(100),
-  earned: z.boolean(),
-});
-
-export type AchievementProgress = z.infer<typeof achievementProgressSchema>;
+export interface AchievementProgress {
+  achievementId: string;
+  name: string;
+  currentValue: number;
+  threshold: number;
+  percent: number;
+  earned: boolean;
+}

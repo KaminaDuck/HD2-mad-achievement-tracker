@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 
 interface ImageUploaderProps {
   onUpload: (file: File) => void;
@@ -11,31 +11,23 @@ export function ImageUploader({ onUpload, isPending, error }: ImageUploaderProps
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = useCallback(
-    (file: File) => {
-      setPreview(URL.createObjectURL(file));
-      onUpload(file);
-    },
-    [onUpload],
-  );
+  function handleFile(file: File) {
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(URL.createObjectURL(file));
+    onUpload(file);
+  }
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setDragOver(false);
-      const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  }
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  }
 
   return (
     <div className="space-y-4">

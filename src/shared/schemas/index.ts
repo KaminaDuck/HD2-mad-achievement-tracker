@@ -8,10 +8,10 @@ export {
 } from "./stats.ts";
 
 export {
-  achievementCategorySchema,
   achievementSchema,
-  achievementProgressSchema,
   type Achievement,
   type AchievementCategory,
   type AchievementProgress,
 } from "./achievements.ts";
+
+export { type Confidence, type ParseResult } from "./ocr.ts";

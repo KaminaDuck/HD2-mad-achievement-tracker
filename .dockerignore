@@ -11,7 +11,6 @@ data/*.sqlite-shm
 *.log
 .env
 .env.*
-PHASE0-FINDINGS.md
 spike-ocr*.ts
 tests
 plan.md

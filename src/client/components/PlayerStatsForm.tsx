@@ -4,85 +4,24 @@ import {
   type CreatePlayerStats,
   type StatKey,
 } from "@/shared/schemas/stats.ts";
-import type { Confidence } from "@/server/services/parser.ts";
-
-interface StatFieldDef {
-  key: StatKey;
-  label: string;
-}
-
-interface StatGroupDef {
-  label: string;
-  fields: StatFieldDef[];
-}
-
-const STAT_GROUPS: StatGroupDef[] = [
-  {
-    label: "Kills",
-    fields: [
-      { key: "enemyKills", label: "Enemy Kills" },
-      { key: "terminidKills", label: "Terminid Kills" },
-      { key: "automatonKills", label: "Automaton Kills" },
-      { key: "illuminateKills", label: "Illuminate Kills" },
-      { key: "friendlyKills", label: "Friendly Kills" },
-      { key: "grenadeKills", label: "Grenade Kills" },
-      { key: "meleeKills", label: "Melee Kills" },
-      { key: "eagleKills", label: "Eagle Kills" },
-    ],
-  },
-  {
-    label: "Missions",
-    fields: [
-      { key: "missionsPlayed", label: "Missions Played" },
-      { key: "missionsWon", label: "Missions Won" },
-      { key: "inMissionTimeSeconds", label: "In-Mission Time (seconds)" },
-    ],
-  },
-  {
-    label: "Accuracy",
-    fields: [
-      { key: "shotsFired", label: "Shots Fired" },
-      { key: "shotsHit", label: "Shots Hit" },
-    ],
-  },
-  {
-    label: "Stratagems",
-    fields: [
-      { key: "orbitalsUsed", label: "Orbitals Used" },
-      { key: "eagleStratagems", label: "Eagle Stratagems" },
-      { key: "supplyStratagems", label: "Supply Stratagems" },
-      { key: "defensiveStratagems", label: "Defensive Stratagems" },
-      { key: "reinforceStratagems", label: "Reinforce Stratagems" },
-      { key: "totalStratagems", label: "Total Stratagems" },
-    ],
-  },
-  {
-    label: "Other",
-    fields: [
-      { key: "deaths", label: "Deaths" },
-      { key: "objectivesCompleted", label: "Objectives Completed" },
-      { key: "samplesCollected", label: "Samples Collected" },
-      { key: "totalXp", label: "Total XP" },
-    ],
-  },
-];
+import type { Confidence } from "@/shared/schemas/ocr.ts";
+import { STAT_GROUPS } from "../lib/stat-fields.ts";
 
 const ALL_STAT_KEYS = STAT_GROUPS.flatMap((g) => g.fields.map((f) => f.key));
 
 function buildDefaults(
   partial?: Partial<Record<StatKey, number>>,
-  playerName?: string,
+  playerName?: string | null,
 ): CreatePlayerStats {
-  const stats = {} as Record<StatKey, number>;
-  for (const key of ALL_STAT_KEYS) {
-    stats[key] = partial?.[key] ?? 0;
-  }
+  const stats = Object.fromEntries(
+    ALL_STAT_KEYS.map((key) => [key, partial?.[key] ?? 0]),
+  ) as Record<StatKey, number>;
   return { playerName: playerName ?? "", ...stats };
 }
 
 interface PlayerStatsFormProps {
   defaultStats?: Partial<Record<StatKey, number>>;
-  defaultPlayerName?: string;
+  defaultPlayerName?: string | null;
   confidence?: Partial<Record<StatKey, Confidence>>;
   onSubmit: (data: CreatePlayerStats) => void;
   isPending: boolean;

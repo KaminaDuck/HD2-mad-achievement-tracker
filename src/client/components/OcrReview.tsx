@@ -1,5 +1,5 @@
 import type { CreatePlayerStats, StatKey } from "@/shared/schemas/stats.ts";
-import type { Confidence } from "@/server/services/parser.ts";
+import type { Confidence } from "@/shared/schemas/ocr.ts";
 import { PlayerStatsForm } from "./PlayerStatsForm.tsx";
 
 interface OcrReviewProps {
@@ -36,7 +36,7 @@ export function OcrReview({
 
       <PlayerStatsForm
         defaultStats={stats}
-        defaultPlayerName={playerName ?? ""}
+        defaultPlayerName={playerName}
         confidence={confidence}
         onSubmit={onSubmit}
         isPending={isPending}

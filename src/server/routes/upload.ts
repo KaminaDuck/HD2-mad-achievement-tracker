@@ -25,8 +25,7 @@ export const upload = new Hono().post("/", async (c) => {
 
   let ocrText: string;
   try {
-    const result = await recognizeImage(buffer);
-    ocrText = result.text;
+    ocrText = await recognizeImage(buffer);
   } catch {
     return c.json({ error: "Could not extract text from image" }, 422);
   }

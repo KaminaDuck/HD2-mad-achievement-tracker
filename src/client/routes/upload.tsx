@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import type { CreatePlayerStats, StatKey } from "@/shared/schemas/stats.ts";
+import type { Confidence } from "@/shared/schemas/ocr.ts";
 import { ImageUploader } from "../components/ImageUploader.tsx";
 import { OcrReview } from "../components/OcrReview.tsx";
 import { PlayerStatsForm } from "../components/PlayerStatsForm.tsx";
 import { useUploadImage } from "../mutations/upload.ts";
 import { useCreateStats } from "../mutations/stats.ts";
-import type { StatKey } from "@/shared/schemas/stats.ts";
-import type { Confidence } from "@/server/services/parser.ts";
 
 type Step =
   | { kind: "upload" }
@@ -28,7 +28,7 @@ function UploadPage() {
   const uploadMutation = useUploadImage();
   const saveMutation = useCreateStats();
 
-  const handleUpload = (file: File) => {
+  function handleUpload(file: File) {
     uploadMutation.mutate(file, {
       onSuccess: (data) => {
         setStep({
@@ -39,13 +39,13 @@ function UploadPage() {
         });
       },
     });
-  };
+  }
 
-  const handleSave = (data: Parameters<typeof saveMutation.mutate>[0]) => {
+  function handleSave(data: CreatePlayerStats) {
     saveMutation.mutate(data, {
       onSuccess: () => navigate({ to: "/" }),
     });
-  };
+  }
 
   return (
     <div className="space-y-6">

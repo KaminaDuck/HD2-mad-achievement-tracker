@@ -1,12 +1,5 @@
 import type { StatKey } from "@/shared/schemas/stats.ts";
-
-export type Confidence = "label" | "position";
-
-export interface ParseResult {
-  stats: Partial<Record<StatKey, number>>;
-  confidence: Partial<Record<StatKey, Confidence>>;
-  playerName: string | null;
-}
+import type { Confidence, ParseResult } from "@/shared/schemas/ocr.ts";
 
 interface StatPattern {
   key: StatKey;

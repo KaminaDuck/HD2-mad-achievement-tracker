@@ -1,35 +1,11 @@
 import { Database } from "bun:sqlite";
 import type { CreatePlayerStats, PlayerStats, StatKey } from "@/shared/schemas/stats.ts";
+import { playerStatsSchema, statKeys } from "@/shared/schemas/stats.ts";
 
-const STAT_COLUMNS: StatKey[] = [
-  "enemyKills",
-  "terminidKills",
-  "automatonKills",
-  "illuminateKills",
-  "friendlyKills",
-  "grenadeKills",
-  "meleeKills",
-  "eagleKills",
-  "missionsPlayed",
-  "missionsWon",
-  "inMissionTimeSeconds",
-  "shotsFired",
-  "shotsHit",
-  "orbitalsUsed",
-  "eagleStratagems",
-  "supplyStratagems",
-  "defensiveStratagems",
-  "reinforceStratagems",
-  "totalStratagems",
-  "deaths",
-  "objectivesCompleted",
-  "samplesCollected",
-  "totalXp",
-];
+const STAT_COLUMNS: readonly StatKey[] = statKeys.options;
 
 function initDb(db: Database): void {
   db.run("PRAGMA journal_mode = WAL;");
-  db.run("PRAGMA foreign_keys = ON;");
 
   db.run(`
     CREATE TABLE IF NOT EXISTS player_stats (
@@ -81,11 +57,10 @@ export function getLatestStats(db: Database): PlayerStats | null {
     .query("SELECT * FROM player_stats ORDER BY recordedAt DESC LIMIT 1")
     .get();
 
-  return (row as PlayerStats) ?? null;
+  return row ? playerStatsSchema.parse(row) : null;
 }
 
 export function getAllStats(db: Database): PlayerStats[] {
-  return db
-    .query("SELECT * FROM player_stats ORDER BY recordedAt DESC")
-    .all() as PlayerStats[];
+  const rows = db.query("SELECT * FROM player_stats ORDER BY recordedAt DESC").all();
+  return rows.map((row) => playerStatsSchema.parse(row));
 }
