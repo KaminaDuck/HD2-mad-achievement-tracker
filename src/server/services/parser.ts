@@ -8,14 +8,16 @@ interface StatPattern {
   isTime: boolean;
 }
 
-/** Stat patterns in card order. Regex is OCR-tolerant (flexible spacing, partial labels). */
+/** Stat patterns in card order. Regex is OCR-tolerant (flexible spacing, partial labels).
+ *  Career page labels use full English (e.g. "Objectives Completed", "In-Mission Time")
+ *  while player card labels are abbreviated ("OBJECTIVES DONE", "TIME PLAYED"). */
 const PATTERNS: StatPattern[] = [
   { key: "enemyKills", label: /ENEM\w*\s*KIL\w*/i, position: 0, isTime: false },
   { key: "terminidKills", label: /TERM\w*\s*KIL\w*/i, position: 1, isTime: false },
   { key: "automatonKills", label: /AUTO\w*\s*KIL\w*/i, position: 2, isTime: false },
-  { key: "illuminateKills", label: /ILLU\w*\s*KIL\w*/i, position: 3, isTime: false },
+  { key: "illuminateKills", label: /[TI]?L+U\w*\s*KIL\w*/i, position: 3, isTime: false },
   { key: "friendlyKills", label: /FRIE\w*\s*KIL\w*/i, position: 4, isTime: false },
-  { key: "grenadeKills", label: /GREN\w*\s*KIL\w*/i, position: 5, isTime: false },
+  { key: "grenadeKills", label: /GREN\w*\s*[KR]IL\w*/i, position: 5, isTime: false },
   { key: "meleeKills", label: /MELE\w*\s*KIL\w*/i, position: 6, isTime: false },
   { key: "eagleKills", label: /EAGLE\s*KIL\w*/i, position: 7, isTime: false },
   { key: "deaths", label: /\bDEAT\w*/i, position: 8, isTime: false },
@@ -25,10 +27,12 @@ const PATTERNS: StatPattern[] = [
   { key: "defensiveStratagems", label: /DEFEN\w*\s*STRA\w*/i, position: 12, isTime: false },
   { key: "eagleStratagems", label: /EAGLE\s*STRA\w*/i, position: 13, isTime: false },
   { key: "supplyStratagems", label: /SUPP\w*\s*STRA\w*/i, position: 14, isTime: false },
-  { key: "objectivesCompleted", label: /OBJEC\w*\s*DON\w*/i, position: 15, isTime: false },
+  { key: "reinforceStratagems", label: /REINFOR\w*\s*STRA\w*/i, position: -1, isTime: false },
+  { key: "totalStratagems", label: /TOTAL\s*STRA\w*/i, position: -1, isTime: false },
+  { key: "objectivesCompleted", label: /OBJEC\w*\s*(?:DON|COMP)\w*/i, position: 15, isTime: false },
   { key: "missionsPlayed", label: /MISS\w*\s*PLAY\w*/i, position: 16, isTime: false },
   { key: "missionsWon", label: /MISS\w*\s*WON/i, position: 17, isTime: false },
-  { key: "inMissionTimeSeconds", label: /TIME\s*PLAY\w*/i, position: 18, isTime: true },
+  { key: "inMissionTimeSeconds", label: /(?:TIME\s*PLAY\w*|IN.?MISS\w*\s*TIME)/i, position: 18, isTime: true },
   { key: "samplesCollected", label: /\bSAMP\w*/i, position: 19, isTime: false },
   { key: "totalXp", label: /TOTA\w*\s*XP/i, position: 20, isTime: false },
 ];
@@ -80,8 +84,20 @@ function findStatTableStart(lines: string[]): number {
 
 /** Extract player name from header lines (before stat table). */
 function extractPlayerName(rawLines: string[]): string | null {
-  // The first line after the pipe-prefixed header typically has the player name.
-  // Format: "| THUPER al" or "| GAMBLE =1"
+  // Career page format: "Ducky [808th MB] %" followed by "CAREER © | Level 67 | ..."
+  for (let i = 0; i < Math.min(rawLines.length, 8); i++) {
+    if (/CAREER\s*[©®]?\s*\|/i.test(rawLines[i]!)) {
+      // The line before "CAREER ©" has the player name on career pages
+      if (i > 0) {
+        const nameLine = rawLines[i - 1]!.trim();
+        // Format: "Ducky [808th MB] %" — take first word before bracket/special chars
+        const nameMatch = nameLine.match(/^(\w[\w-]*)/);
+        if (nameMatch?.[1] && nameMatch[1].length >= 2) return nameMatch[1];
+      }
+    }
+  }
+
+  // Player card format: "| THUPER al" or "| GAMBLE =1"
   for (const line of rawLines.slice(0, 5)) {
     const cleaned = preprocessLine(line);
     // Skip known headers
@@ -93,10 +109,24 @@ function extractPlayerName(rawLines: string[]): string | null {
   return null;
 }
 
+/** Try to match a label pattern against a line and extract its value. */
+function tryLabelMatch(
+  line: string,
+  pattern: StatPattern,
+): number | null {
+  const labelMatch = pattern.label.exec(line);
+  if (!labelMatch) return null;
+  const afterLabel = line.slice(labelMatch.index + labelMatch[0].length);
+  return pattern.isTime ? extractTime(afterLabel) : extractNumber(afterLabel);
+}
+
 /** Parse raw OCR text into structured stats with confidence levels. */
 export function parseOcrText(rawText: string): ParseResult {
   const rawLines = rawText.split("\n").filter((l) => l.trim().length > 0);
   const cleanedLines = rawLines.map(preprocessLine);
+  // Keep trimmed raw lines for career page matching — preprocessLine can strip
+  // useful data when pipes appear in character model noise (right side of career page)
+  const trimmedLines = rawLines.map((l) => l.trim());
 
   const playerName = extractPlayerName(rawLines);
   const statStart = findStatTableStart(cleanedLines);
@@ -105,27 +135,37 @@ export function parseOcrText(rawText: string): ParseResult {
   const confidence: Partial<Record<StatKey, Confidence>> = {};
 
   for (const pattern of PATTERNS) {
-    // Strategy 1: label match (high confidence)
+    // Strategy 1: label match on preprocessed lines (high confidence — player card)
     let found = false;
     for (const line of cleanedLines) {
-      const labelMatch = pattern.label.exec(line);
-      if (labelMatch) {
-        const afterLabel = line.slice(labelMatch.index + labelMatch[0].length);
-        const value = pattern.isTime
-          ? extractTime(afterLabel)
-          : extractNumber(afterLabel);
+      const value = tryLabelMatch(line, pattern);
+      if (value !== null) {
+        stats[pattern.key] = value;
+        confidence[pattern.key] = "label";
+        found = true;
+        break;
+      }
+      // If label matched but value extraction failed, still break to avoid false positives
+      if (pattern.label.test(line)) break;
+    }
 
+    // Strategy 1b: label match on raw trimmed lines (career page fallback —
+    // catches lines where preprocessLine stripped the stat after a pipe)
+    if (!found) {
+      for (const line of trimmedLines) {
+        const value = tryLabelMatch(line, pattern);
         if (value !== null) {
           stats[pattern.key] = value;
           confidence[pattern.key] = "label";
           found = true;
+          break;
         }
-        break;
+        if (pattern.label.test(line)) break;
       }
     }
 
     // Strategy 2: positional fallback (low confidence)
-    if (!found && statStart >= 0) {
+    if (!found && statStart >= 0 && pattern.position >= 0) {
       const lineIndex = statStart + pattern.position;
       if (lineIndex < cleanedLines.length) {
         const line = cleanedLines[lineIndex]!;
