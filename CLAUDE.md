@@ -18,6 +18,10 @@ This project uses the Fearnstack - a type-safe full-stack TypeScript architectur
 - **Forms**: TanStack Form (form state with Zod validation)
 - **UI**: React 19 with Compiler
 
+## Git Rules
+
+- Do NOT add `Co-Authored-By` trailers to commits (see `.agents/settings.json`)
+
 ## Commands
 
 ```bash
