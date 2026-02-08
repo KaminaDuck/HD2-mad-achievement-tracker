@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - tracker-data:/app/data
+      - tracker-uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  tracker-data:
+  tracker-uploads:
