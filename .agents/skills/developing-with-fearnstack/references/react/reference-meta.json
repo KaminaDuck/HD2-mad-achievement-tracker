@@ -1,0 +1,9 @@
+{
+  "name": "react",
+  "description": "React framework references, component libraries, and patterns for frontend development",
+  "tags": ["typescript", "react", "components", "ui", "frontend", "javascript"],
+  "category": "typescript",
+  "subcategory": "react",
+  "version": "1.0",
+  "status": "stable"
+}

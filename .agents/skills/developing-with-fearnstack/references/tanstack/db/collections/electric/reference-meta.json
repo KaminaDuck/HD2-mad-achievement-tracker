@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-electric",
+  "description": "Electric SQL collection adapter for TanStack DB real-time sync",
+  "tags": ["typescript", "tanstack", "db", "electric", "sync", "postgres"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

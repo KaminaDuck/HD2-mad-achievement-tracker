@@ -1,0 +1,44 @@
+# Vite Single Page Application (React/Vue/Svelte)
+#
+# Use when: Deploying a Vite-based SPA (React, Vue, Svelte, etc.)
+# Output: Build artifacts in dist/, published to Pages
+#
+# Required: Update vite.config.js with correct base path
+#
+# // vite.config.js
+# export default {
+#   base: '/your-project-name/',  // For project pages
+#   // base: '/',                 // For user/group pages
+# }
+
+pages:
+  image: node:20-slim
+  stage: deploy
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run build
+  pages:
+    publish: dist
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .npm/
+      - node_modules/
+
+# With environment variable for base path
+# pages:
+#   image: node:20-slim
+#   stage: deploy
+#   variables:
+#     VITE_BASE_PATH: "/${CI_PROJECT_NAME}/"
+#   before_script:
+#     - npm ci
+#   script:
+#     - npm run build -- --base=$VITE_BASE_PATH
+#   pages:
+#     publish: dist
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"

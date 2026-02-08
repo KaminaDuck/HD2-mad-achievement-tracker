@@ -1,0 +1,9 @@
+{
+  "name": "hono-api",
+  "description": "Hono API reference documentation covering App, Context, Routing, Request, and Exception handling",
+  "tags": ["typescript", "hono", "api", "context", "routing", "request", "exception"],
+  "category": "typescript",
+  "subcategory": "web-framework",
+  "version": "1.0",
+  "status": "stable"
+}

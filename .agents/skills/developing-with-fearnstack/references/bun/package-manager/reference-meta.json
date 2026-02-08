@@ -1,0 +1,9 @@
+{
+  "name": "package-manager",
+  "description": "Bun's fast package manager - install, add, bunx, workspaces, and lockfile management",
+  "tags": ["bun", "package-manager", "npm", "install", "workspaces", "monorepo"],
+  "category": "typescript",
+  "subcategory": "package-manager",
+  "version": "1.0",
+  "status": "stable"
+}

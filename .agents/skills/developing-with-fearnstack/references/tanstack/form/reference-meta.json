@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-form",
+  "description": "TanStack Form type-safe form management with validation",
+  "tags": ["tanstack", "form", "validation", "forms", "input", "state-management"],
+  "category": "typescript",
+  "subcategory": "forms",
+  "version": "1.0",
+  "status": "stable"
+}

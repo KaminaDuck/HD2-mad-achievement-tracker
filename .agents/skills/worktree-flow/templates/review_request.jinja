@@ -1,0 +1,25 @@
+================================================================================
+                            REVIEW REQUEST
+================================================================================
+
+Branch: {{ branch }} -> {{ base_branch }}
+
+Verification Status:
+  [{{ 'x' if simplified else ' ' }}] Code simplified (--simplified flag)
+  [{{ 'x' if linted else ' ' }}] Lint passed
+  [{{ 'x' if tested else ' ' }}] Tests passed
+
+Changes (git diff --cached --stat):
+{{ diff_stats }}
+
+Files:
+{% for file in files %}
+  {{ '%8s'|format(file.status) }} {{ file.path }}
+{% endfor %}
+
+--------------------------------------------------------------------------------
+Options:
+  [A]pprove and commit
+  [D]iff - show full diff
+  [M]odify - return to implementing
+================================================================================

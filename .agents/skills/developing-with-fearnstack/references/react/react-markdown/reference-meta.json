@@ -1,0 +1,9 @@
+{
+  "name": "react-markdown",
+  "description": "react-markdown and remark-gfm libraries for safely rendering markdown in React",
+  "tags": ["typescript", "react", "markdown", "rendering", "component", "gfm", "unified"],
+  "category": "typescript",
+  "subcategory": "react",
+  "version": "1.0",
+  "status": "stable"
+}

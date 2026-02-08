@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-rxdb",
+  "description": "RxDB collection adapter for TanStack DB reactive database sync",
+  "tags": ["typescript", "tanstack", "db", "rxdb", "reactive", "sync"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

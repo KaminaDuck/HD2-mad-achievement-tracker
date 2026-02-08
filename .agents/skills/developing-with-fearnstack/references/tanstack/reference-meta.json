@@ -1,0 +1,9 @@
+{
+  "name": "tanstack",
+  "description": "TanStack library ecosystem for React, Vue, Solid, and other frameworks",
+  "tags": ["tanstack", "typescript", "react", "headless", "framework-agnostic"],
+  "category": "typescript",
+  "subcategory": "libraries",
+  "version": "1.0",
+  "status": "stable"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-svelte",
+  "description": "Svelte adapter for TanStack DB with stores and runes",
+  "tags": ["typescript", "tanstack", "db", "svelte", "framework", "stores"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

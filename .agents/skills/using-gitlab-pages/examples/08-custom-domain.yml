@@ -1,0 +1,46 @@
+# Custom Domain with SSL
+#
+# Use when: Deploying to a custom domain with HTTPS
+#
+# Prerequisites:
+# 1. Add domain in GitLab: Deploy > Pages > New Domain
+# 2. Configure DNS records (see below)
+# 3. Verify domain ownership
+# 4. Enable Let's Encrypt (automatic) or upload certificate
+#
+# DNS Records for root domain (example.com):
+#   Type    Name                                      Value
+#   A       example.com                               35.185.44.232
+#   AAAA    example.com                               2600:1901:0:7b8a::
+#   TXT     _gitlab-pages-verification-code.example.com    gitlab-pages-verification-code=<code>
+#
+# DNS Records for subdomain (www.example.com):
+#   Type    Name                                          Value
+#   CNAME   www                                           namespace.gitlab.io
+#   TXT     _gitlab-pages-verification-code.www.example.com    gitlab-pages-verification-code=<code>
+#
+# DNS Records for both root + www:
+#   - Add A/AAAA records for root
+#   - Add CNAME for www
+#   - Add TXT verification for both
+
+pages:
+  image: node:20-slim
+  stage: deploy
+  before_script:
+    - npm ci
+  script:
+    - npm run build
+  pages:
+    publish: dist
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# Note: The CI/CD configuration is the same whether using
+# default domain or custom domain. The domain configuration
+# is done in the GitLab UI under Deploy > Pages.
+#
+# After adding custom domain:
+# - Site available at both default and custom domain
+# - Set "Primary domain" to redirect all traffic to one domain
+# - Enable "Force HTTPS" for automatic HTTP -> HTTPS redirect

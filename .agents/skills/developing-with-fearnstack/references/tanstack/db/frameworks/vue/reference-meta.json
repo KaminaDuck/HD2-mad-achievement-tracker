@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-vue",
+  "description": "Vue adapter for TanStack DB with composables and reactivity",
+  "tags": ["typescript", "tanstack", "db", "vue", "framework", "composables"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

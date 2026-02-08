@@ -1,0 +1,42 @@
+# Worktree Service Configuration
+# Copy to .agents/.worktree-services.toml and customize
+#
+# This file is OPTIONAL. If not present, service features are skipped.
+
+[docker]
+# Container name prefix for compose services
+# Containers will be named: <prefix>_<worktree-name>_<service>
+prefix = "myproject"
+
+# Container runtime: "auto" (default), "docker", or "podman"
+# "auto" prefers Docker if available, falls back to Podman
+runtime = "auto"
+
+[ports]
+# Base ports (offset 10-99 will be added based on worktree name hash)
+# REQUIRED if using services - there are no defaults
+#
+# Example: worktree "feature-auth" might get offset 42
+#   server -> 19091 + 42 = 19133
+#   webui  -> 19071 + 42 = 19113
+server = 19091
+webui = 19071
+
+# Define services for health checking
+# Each service needs: name, port_key (matches [ports] key), health_path
+
+[[services]]
+name = "Server"
+port_key = "SERVER_PORT"
+health_path = "/health"
+
+[[services]]
+name = "WebUI"
+port_key = "WEBUI_PORT"
+health_path = "/"
+
+# Add more services as needed:
+# [[services]]
+# name = "Database"
+# port_key = "DB_PORT"
+# health_path = "/health"

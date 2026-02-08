@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-react",
+  "description": "React adapter for TanStack DB with hooks and live queries",
+  "tags": ["typescript", "tanstack", "db", "react", "framework", "hooks"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "json-viewer",
+  "description": "@textea/json-viewer React component for displaying and inspecting JSON data",
+  "tags": ["typescript", "react", "json", "viewer", "component", "mui", "data-visualization"],
+  "category": "typescript",
+  "subcategory": "react",
+  "version": "1.0",
+  "status": "stable"
+}

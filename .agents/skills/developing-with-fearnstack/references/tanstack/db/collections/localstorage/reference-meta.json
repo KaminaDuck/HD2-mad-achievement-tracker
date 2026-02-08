@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-localstorage",
+  "description": "LocalStorage collection adapter for TanStack DB browser persistence",
+  "tags": ["typescript", "tanstack", "db", "localstorage", "browser", "persistence"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

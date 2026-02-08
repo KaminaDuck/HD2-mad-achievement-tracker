@@ -1,0 +1,9 @@
+{
+  "name": "bundler",
+  "description": "Bun's fast native bundler for JavaScript, TypeScript, HTML, and static sites with code splitting and executable compilation",
+  "tags": ["bun", "bundler", "build", "transpiler", "esm", "html", "compile", "executable"],
+  "category": "typescript",
+  "subcategory": "bundler",
+  "version": "1.0",
+  "status": "stable"
+}

@@ -1,0 +1,23 @@
+# Worktree Lifecycle Configuration
+# Copy to `.agents/.worktree-config.toml` and customize
+# See: skills/worktree-flow/docs/lifecycle-spec.md
+
+# Script to run after worktree creation (relative to repo root)
+setup_script = "scripts/worktree-setup.sh"
+
+# Command to validate worktree health
+validation_command = "make test"
+
+# Script to run before transitioning to human-manual-review phase (displays review summary)
+review_script = "uv run skills/worktree-flow/hooks/request-review/request_review.py"
+
+# Script to run before worktree removal
+# Stops dev server, releases ports, removes generated files
+# Supports --dry-run, --force, and --hook flags for extensibility
+cleanup_script = "scripts/worktree-cleanup.sh"
+
+# Environment file to copy from main repo for secrets/API keys (optional)
+env_file = ""
+
+# Status file location (default: worktree-status.toml)
+status_file_path = "worktree-status.toml"

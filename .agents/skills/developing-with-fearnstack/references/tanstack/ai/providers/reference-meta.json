@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-ai-providers",
+  "description": "Provider adapter packages for TanStack AI - OpenAI, Gemini, Anthropic, Ollama",
+  "tags": ["typescript", "tanstack", "ai", "providers", "llm", "adapters"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

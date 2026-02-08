@@ -1,0 +1,9 @@
+{
+  "name": "hono",
+  "description": "Ultrafast web framework built on Web Standards for Cloudflare Workers, Bun, Deno, Node.js, and other JavaScript runtimes",
+  "tags": ["typescript", "hono", "web-framework", "bun", "cloudflare-workers", "deno", "nodejs", "api", "rest", "middleware"],
+  "category": "typescript",
+  "subcategory": "web-framework",
+  "version": "1.0",
+  "status": "stable"
+}

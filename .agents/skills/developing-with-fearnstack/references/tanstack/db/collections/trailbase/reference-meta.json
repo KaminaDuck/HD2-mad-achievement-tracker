@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-trailbase",
+  "description": "TrailBase collection adapter for TanStack DB backend integration",
+  "tags": ["typescript", "tanstack", "db", "trailbase", "backend", "sync"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

@@ -1,0 +1,72 @@
+# Review Apps with Parallel Deployments (Premium/Ultimate)
+#
+# Use when: You want preview deployments for merge requests
+# Creates: Separate URL for each MR (e.g., /mr-123/)
+#
+# Features:
+# - Main branch deploys to root URL
+# - MRs get preview URLs with path prefix
+# - Auto-cleanup when MR is merged/closed
+# - Environment tracking in GitLab UI
+
+stages:
+  - build
+  - deploy
+
+variables:
+  PAGES_PREFIX: ""
+
+build:
+  image: node:20-slim
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# Production deployment (main branch)
+pages:
+  stage: deploy
+  script:
+    - echo "Deploying to ${CI_PAGES_URL}"
+  pages:
+    publish: dist
+  environment:
+    name: production
+    url: $CI_PAGES_URL
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# Review app deployment (merge requests)
+pages:review:
+  stage: deploy
+  script:
+    - echo "Deploying review app to ${CI_PAGES_URL}"
+  pages:
+    publish: dist
+    path_prefix: "mr-$CI_MERGE_REQUEST_IID"
+    expire_in: 1 week
+  environment:
+    name: review/$CI_MERGE_REQUEST_IID
+    url: $CI_PAGES_URL
+    on_stop: pages:review:stop
+    auto_stop_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+pages:review:stop:
+  stage: deploy
+  script:
+    - echo "Stopping review app"
+  environment:
+    name: review/$CI_MERGE_REQUEST_IID
+    action: stop
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual

@@ -1,0 +1,9 @@
+{
+  "name": "zod",
+  "description": "Zod TypeScript-first schema validation library with static type inference",
+  "tags": ["typescript", "zod", "validation", "schema", "typing", "type-safety"],
+  "category": "typescript",
+  "subcategory": "validation",
+  "version": "1.0",
+  "status": "stable"
+}

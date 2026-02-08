@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-ai-react",
+  "description": "React hooks and UI components for TanStack AI chat applications",
+  "tags": ["typescript", "tanstack", "ai", "react", "hooks", "devtools"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

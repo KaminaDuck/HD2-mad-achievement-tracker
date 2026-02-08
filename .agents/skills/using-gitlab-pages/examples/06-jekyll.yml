@@ -1,0 +1,49 @@
+# Jekyll Static Site
+#
+# Use when: Building a Jekyll-based blog or documentation site
+# Output: Generates site in public/
+#
+# Required files:
+#   _config.yml         - Jekyll configuration
+#   Gemfile             - Ruby dependencies
+#   _posts/             - Blog posts
+#   index.md            - Home page
+#
+# Example _config.yml for project pages:
+#   baseurl: "/your-project-name"
+#   url: "https://namespace.gitlab.io"
+
+pages:
+  image: ruby:3.2
+  stage: deploy
+  before_script:
+    - gem install bundler
+    - bundle install
+  script:
+    - bundle exec jekyll build -d public
+  pages: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  cache:
+    paths:
+      - vendor/ruby
+
+# With GitHub Pages gem (includes common plugins)
+# pages:
+#   image: ruby:3.2
+#   stage: deploy
+#   variables:
+#     JEKYLL_ENV: production
+#   before_script:
+#     - gem install bundler
+#     - bundle config set --local path 'vendor/ruby'
+#     - bundle install
+#   script:
+#     - bundle exec jekyll build -d public
+#   pages: true
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}
+#     paths:
+#       - vendor/ruby

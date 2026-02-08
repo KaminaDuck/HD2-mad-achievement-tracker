@@ -1,0 +1,9 @@
+{
+  "name": "runtime",
+  "description": "Bun runtime APIs for environment variables, file I/O, streams, workers, shell, and process spawning",
+  "tags": ["bun", "runtime", "file-io", "streams", "workers", "shell", "spawn", "environment"],
+  "category": "typescript",
+  "subcategory": "runtime",
+  "version": "1.0",
+  "status": "stable"
+}

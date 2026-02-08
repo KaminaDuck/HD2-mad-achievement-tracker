@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-ai",
+  "description": "TanStack AI SDK for building type-safe AI experiences with streaming",
+  "tags": ["tanstack", "ai", "llm", "streaming", "tools", "chat", "multimodal"],
+  "category": "typescript",
+  "subcategory": "ai",
+  "version": "0.2",
+  "status": "stable"
+}

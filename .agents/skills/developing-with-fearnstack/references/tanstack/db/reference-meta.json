@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db",
+  "description": "TanStack DB reactive client-first store for API data management",
+  "tags": ["tanstack", "db", "database", "reactive", "collections", "live-queries"],
+  "category": "typescript",
+  "subcategory": "data-management",
+  "version": "0.5",
+  "status": "stable"
+}

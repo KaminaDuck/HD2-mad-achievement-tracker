@@ -1,0 +1,9 @@
+{
+  "name": "hono-helpers",
+  "description": "Hono helper documentation covering streaming, testing, factory, and other utility helpers",
+  "tags": ["typescript", "hono", "helpers", "streaming", "testing", "factory", "sse"],
+  "category": "typescript",
+  "subcategory": "web-framework",
+  "version": "1.0",
+  "status": "stable"
+}

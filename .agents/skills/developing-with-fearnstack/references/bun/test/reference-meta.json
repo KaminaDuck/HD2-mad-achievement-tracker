@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "description": "Bun's fast, built-in, Jest-compatible test runner with mocks, snapshots, and watch mode",
+  "tags": ["bun", "test", "jest", "testing", "mocks", "snapshots", "runner"],
+  "category": "typescript",
+  "subcategory": "test",
+  "version": "1.0",
+  "status": "stable"
+}

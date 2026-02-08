@@ -1,0 +1,9 @@
+{
+  "name": "database",
+  "description": "Bun's native database integrations - SQLite, SQL (PostgreSQL/MySQL), and Redis",
+  "tags": ["bun", "database", "sqlite", "postgresql", "mysql", "redis", "sql"],
+  "category": "typescript",
+  "subcategory": "database",
+  "version": "1.0",
+  "status": "stable"
+}

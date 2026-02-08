@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-solid",
+  "description": "SolidJS adapter for TanStack DB with reactive primitives",
+  "tags": ["typescript", "tanstack", "db", "solid", "framework", "reactive"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

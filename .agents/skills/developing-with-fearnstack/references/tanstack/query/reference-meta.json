@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-query",
+  "description": "TanStack Query powerful asynchronous state management and data fetching",
+  "tags": ["tanstack", "query", "data-fetching", "cache", "async", "state-management"],
+  "category": "typescript",
+  "subcategory": "data-fetching",
+  "version": "5.0",
+  "status": "stable"
+}

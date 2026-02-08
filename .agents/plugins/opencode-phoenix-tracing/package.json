@@ -1,0 +1,30 @@
+{
+  "name": "opencode-phoenix-tracing",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/phoenix-tracing.js",
+  "scripts": {
+    "build": "bun build --outdir=dist --target=bun phoenix-tracing.ts",
+    "test": "bun test",
+    "test:e2e": "bun test tests/e2e/smoke.test.ts && bun test tests/e2e/agent-spans.test.ts && bun test tests/e2e/llm-spans.test.ts && bun test tests/e2e/tool-spans.test.ts && bun test tests/e2e/span-hierarchy.test.ts",
+    "test:e2e:smoke": "OPENCODE_PHOENIX_BATCH=false bun test tests/e2e/smoke.test.ts",
+    "test:e2e:agent": "OPENCODE_PHOENIX_BATCH=false bun test tests/e2e/agent-spans.test.ts",
+    "test:e2e:llm": "OPENCODE_PHOENIX_BATCH=false bun test tests/e2e/llm-spans.test.ts",
+    "test:e2e:tool": "OPENCODE_PHOENIX_BATCH=false bun test tests/e2e/tool-spans.test.ts",
+    "test:e2e:hierarchy": "OPENCODE_PHOENIX_BATCH=false bun test tests/e2e/span-hierarchy.test.ts",
+    "check-traces": "bun run scripts/check-traces.ts",
+    "clear-traces": "bun run scripts/clear-traces.ts"
+  },
+  "dependencies": {
+    "@arizeai/phoenix-client": "^5.6.1",
+    "@arizeai/phoenix-otel": "^0.3.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.52.0",
+    "@opentelemetry/sdk-trace-base": "^1.25.0"
+  },
+  "devDependencies": {
+    "@opencode-ai/sdk": "latest",
+    "bun-types": "^1.3.6",
+    "typescript": "^5.9.3"
+  }
+}

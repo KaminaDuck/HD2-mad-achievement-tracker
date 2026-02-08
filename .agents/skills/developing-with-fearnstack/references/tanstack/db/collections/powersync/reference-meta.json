@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-powersync",
+  "description": "PowerSync collection adapter for TanStack DB offline-first sync",
+  "tags": ["typescript", "tanstack", "db", "powersync", "sync", "offline"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

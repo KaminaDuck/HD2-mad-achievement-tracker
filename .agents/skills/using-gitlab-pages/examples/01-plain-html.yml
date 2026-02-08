@@ -1,0 +1,21 @@
+# Plain HTML GitLab Pages Deployment
+#
+# Use when: You have static HTML/CSS/JS files ready to deploy
+# Output: Copies files from docs/ to public/
+#
+# Directory structure:
+#   docs/
+#   ├── index.html
+#   ├── css/
+#   │   └── style.css
+#   └── js/
+#       └── app.js
+
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp -r docs/* public/
+  pages: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

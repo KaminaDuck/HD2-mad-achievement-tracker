@@ -1,0 +1,92 @@
+[
+  {
+    "id": "death-from-above",
+    "name": "Death From Above",
+    "description": "Use 5,000 Orbital Stratagems",
+    "category": "stratagems",
+    "statKey": "orbitalsUsed",
+    "threshold": 5000,
+    "icon": "deathfromabove"
+  },
+  {
+    "id": "demolition-virtuoso",
+    "name": "Demolition Virtuoso",
+    "description": "Get 10,000 Grenade Kills",
+    "category": "kills",
+    "statKey": "grenadeKills",
+    "threshold": 10000,
+    "icon": "demolitionviruoso"
+  },
+  {
+    "id": "doom-of-the-enlightened",
+    "name": "Doom of the Enlightened",
+    "description": "Kill 80,000 Illuminate",
+    "category": "kills",
+    "statKey": "illuminateKills",
+    "threshold": 80000,
+    "icon": "80ksquids"
+  },
+  {
+    "id": "exterminator-general",
+    "name": "Exterminator General",
+    "description": "Kill 80,000 Terminids",
+    "category": "kills",
+    "statKey": "terminidKills",
+    "threshold": 80000,
+    "icon": "80kbugs"
+  },
+  {
+    "id": "hold-the-line",
+    "name": "Hold the Line",
+    "description": "Use 3,500 Defensive Stratagems",
+    "category": "stratagems",
+    "statKey": "defensiveStratagems",
+    "threshold": 3500,
+    "icon": "defence"
+  },
+  {
+    "id": "life-support",
+    "name": "Life Support",
+    "description": "Use 2,500 Supply Stratagems",
+    "category": "stratagems",
+    "statKey": "supplyStratagems",
+    "threshold": 2500,
+    "icon": "support"
+  },
+  {
+    "id": "machine-reaper",
+    "name": "Machine Reaper",
+    "description": "Kill 80,000 Automatons",
+    "category": "kills",
+    "statKey": "automatonKills",
+    "threshold": 80000,
+    "icon": "80kbots"
+  },
+  {
+    "id": "overseer",
+    "name": "Overseer",
+    "description": "Call in 3,500 Reinforcements",
+    "category": "stratagems",
+    "statKey": "reinforceStratagems",
+    "threshold": 3500,
+    "icon": "overseer"
+  },
+  {
+    "id": "sample-extractor",
+    "name": "Sample Extractor",
+    "description": "Collect 18,808 or more Samples",
+    "category": "misc",
+    "statKey": "samplesCollected",
+    "threshold": 18808,
+    "icon": "samples"
+  },
+  {
+    "id": "sky-tyrant",
+    "name": "Sky Tyrant",
+    "description": "Get 5,000 Eagle Kills",
+    "category": "kills",
+    "statKey": "eagleKills",
+    "threshold": 5000,
+    "icon": "skytyrant"
+  }
+]

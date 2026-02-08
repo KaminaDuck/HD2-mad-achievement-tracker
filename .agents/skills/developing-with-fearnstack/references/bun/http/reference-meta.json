@@ -1,0 +1,9 @@
+{
+  "name": "http",
+  "description": "Bun's HTTP server, WebSockets, fetch client, and low-level TCP/UDP networking",
+  "tags": ["bun", "http", "server", "websockets", "fetch", "tcp", "udp", "networking"],
+  "category": "typescript",
+  "subcategory": "http",
+  "version": "1.0",
+  "status": "stable"
+}

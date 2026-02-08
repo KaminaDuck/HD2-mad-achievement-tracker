@@ -1,0 +1,27 @@
+[project]
+name = "worktree-flow"
+version = "2.1.0"
+description = "Worktree lifecycle management for agent-assisted development"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest"]
+templates = ["jinja2"]
+services = ["requests"]
+podman = ["podman-compose"]
+all = ["jinja2", "requests", "podman-compose"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["worktree_flow"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]

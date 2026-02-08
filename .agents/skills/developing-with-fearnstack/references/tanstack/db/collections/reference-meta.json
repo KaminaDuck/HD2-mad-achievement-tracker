@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-collections",
+  "description": "TanStack DB collection adapters for various sync backends",
+  "tags": ["typescript", "tanstack", "db", "collections", "sync", "adapters"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

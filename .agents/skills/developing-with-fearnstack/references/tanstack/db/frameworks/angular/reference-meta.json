@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-angular",
+  "description": "Angular adapter for TanStack DB with signals and dependency injection",
+  "tags": ["typescript", "tanstack", "db", "angular", "framework", "signals"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

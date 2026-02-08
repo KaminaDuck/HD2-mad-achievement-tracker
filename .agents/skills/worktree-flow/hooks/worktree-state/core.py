@@ -1,0 +1,47 @@
+"""Backward compatibility wrapper - use worktree_flow.core instead."""
+
+from worktree_flow.core import (
+    CONFIG_FILE,
+    DEFAULT_VALIDATION_TIMEOUT,
+    PHASES,
+    PHASES_REQUIRING_APPROVAL,
+    STATUS_FILE,
+    VALID_TRANSITIONS,
+    ValidationResult,
+    ValidationSummary,
+    can_transition,
+    do_transition,
+    get_config,
+    get_current_phase,
+    get_phase_history,
+    get_status_file_path,
+    get_validation_config,
+    parse_toml_value,
+    run_phase_script,
+    run_single_validation,
+    run_validations,
+)
+from worktree_flow.core.state import PHASE_SCRIPTS
+
+__all__ = [
+    "CONFIG_FILE",
+    "DEFAULT_VALIDATION_TIMEOUT",
+    "PHASES",
+    "PHASES_REQUIRING_APPROVAL",
+    "PHASE_SCRIPTS",
+    "STATUS_FILE",
+    "VALID_TRANSITIONS",
+    "ValidationResult",
+    "ValidationSummary",
+    "can_transition",
+    "do_transition",
+    "get_config",
+    "get_current_phase",
+    "get_phase_history",
+    "get_status_file_path",
+    "get_validation_config",
+    "parse_toml_value",
+    "run_phase_script",
+    "run_single_validation",
+    "run_validations",
+]

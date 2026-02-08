@@ -1,0 +1,32 @@
+# MkDocs Documentation Site
+#
+# Use when: Building documentation from Markdown files
+# Output: Generates site in public/
+#
+# Required files:
+#   mkdocs.yml          - MkDocs configuration
+#   docs/
+#   ├── index.md        - Home page
+#   └── *.md            - Other pages
+#
+# Example mkdocs.yml:
+#   site_name: My Documentation
+#   theme:
+#     name: material
+#   nav:
+#     - Home: index.md
+#     - Guide: guide.md
+
+pages:
+  image: python:3.12-slim
+  stage: deploy
+  before_script:
+    - pip install mkdocs mkdocs-material
+  script:
+    - mkdocs build --site-dir public
+  pages: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  cache:
+    paths:
+      - .cache/

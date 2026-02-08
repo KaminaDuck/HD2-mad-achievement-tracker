@@ -1,0 +1,9 @@
+{
+  "name": "hono-middleware",
+  "description": "Hono middleware documentation covering CORS, JWT authentication, and other built-in middleware",
+  "tags": ["typescript", "hono", "middleware", "cors", "jwt", "authentication", "security"],
+  "category": "typescript",
+  "subcategory": "web-framework",
+  "version": "1.0",
+  "status": "stable"
+}

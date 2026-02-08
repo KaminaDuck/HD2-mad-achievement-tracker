@@ -1,0 +1,9 @@
+{
+  "name": "hono-guides",
+  "description": "Hono guides covering Bun runtime, middleware, testing, validation, RPC, and best practices",
+  "tags": ["typescript", "hono", "guides", "bun", "middleware", "testing", "validation", "rpc"],
+  "category": "typescript",
+  "subcategory": "web-framework",
+  "version": "1.0",
+  "status": "stable"
+}

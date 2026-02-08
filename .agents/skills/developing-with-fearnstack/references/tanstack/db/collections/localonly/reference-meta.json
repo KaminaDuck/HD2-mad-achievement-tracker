@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-localonly",
+  "description": "Local-only collection adapter for TanStack DB without sync",
+  "tags": ["typescript", "tanstack", "db", "local", "storage", "collection"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

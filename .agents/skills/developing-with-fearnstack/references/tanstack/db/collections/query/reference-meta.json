@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-query",
+  "description": "TanStack Query collection adapter for TanStack DB caching integration",
+  "tags": ["typescript", "tanstack", "db", "query", "collection", "caching"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

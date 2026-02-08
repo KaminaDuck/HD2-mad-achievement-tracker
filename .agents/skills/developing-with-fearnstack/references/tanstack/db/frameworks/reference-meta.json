@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-db-frameworks",
+  "description": "TanStack DB framework adapters for React, Vue, Svelte, Angular, Solid",
+  "tags": ["typescript", "tanstack", "db", "frameworks", "adapters", "hooks"],
+  "category": "typescript",
+  "subcategory": "tanstack",
+  "version": "1.0",
+  "status": "stable"
+}

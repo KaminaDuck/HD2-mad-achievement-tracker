@@ -1,0 +1,9 @@
+{
+  "name": "bun",
+  "description": "All-in-one JavaScript/TypeScript runtime, package manager, bundler, and test runner",
+  "tags": ["typescript", "javascript", "bun", "runtime", "package-manager", "bundler", "test-runner", "nodejs-alternative"],
+  "category": "typescript",
+  "subcategory": "runtime",
+  "version": "1.0",
+  "status": "stable"
+}

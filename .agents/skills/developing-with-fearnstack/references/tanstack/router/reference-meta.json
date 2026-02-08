@@ -1,0 +1,9 @@
+{
+  "name": "tanstack-router",
+  "description": "TanStack Router fully type-safe routing with data loading",
+  "tags": ["tanstack", "router", "routing", "navigation", "spa", "type-safe"],
+  "category": "typescript",
+  "subcategory": "routing",
+  "version": "1.93",
+  "status": "stable"
+}
