@@ -1,0 +1,23 @@
+{
+  "enemyKills": 657364,
+  "terminidKills": 437961,
+  "automatonKills": 124099,
+  "illuminateKills": 95304,
+  "friendlyKills": 1017,
+  "grenadeKills": 22529,
+  "meleeKills": 2044,
+  "eagleKills": 76447,
+  "deaths": 5720,
+  "shotsFired": 3538653,
+  "shotsHit": 2190546,
+  "orbitalsUsed": 14001,
+  "defensiveStratagems": 6195,
+  "eagleStratagems": 17326,
+  "supplyStratagems": 6369,
+  "objectivesCompleted": 16838,
+  "missionsPlayed": 2844,
+  "missionsWon": 2722,
+  "inMissionTimeSeconds": 3935744,
+  "samplesCollected": 47999,
+  "totalXp": 4697397
+}
