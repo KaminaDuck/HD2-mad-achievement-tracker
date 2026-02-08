@@ -1,6 +1,9 @@
 .claude/
 node_modules/
-*.traineddata
 dist/
 uploads/
 data/*.sqlite
+*.traineddata
+.env
+.env.*
+*.log
