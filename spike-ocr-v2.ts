@@ -1,10 +1,11 @@
 /**
  * Phase 0: OCR Feasibility Spike v2
  *
- * Improved parsing with:
+ * Reads stat labels from data/stat_names.txt (source of truth) and builds
+ * OCR-tolerant regex patterns dynamically. Parsing uses:
  * 1. Line preprocessing: strip noise before | separator
- * 2. Fuzzy label matching for garbled OCR text
- * 3. Positional fallback: if label not found, try matching by line position
+ * 2. Label match with OCR tolerance (truncated words, missing spaces)
+ * 3. Positional fallback: if label garbled, use known line position
  *
  * Usage: bun run spike-ocr-v2.ts [path-to-image]
  */
@@ -14,6 +15,65 @@ import { join } from "path";
 const imagePath =
   process.argv[2] ||
   join(import.meta.dir, "tests/fixtures/sample-player-card.png");
+
+// --- LOAD STAT NAMES FROM SOURCE OF TRUTH ---
+const statNamesFile = await Bun.file(
+  join(import.meta.dir, "data/stat_names.txt")
+).text();
+const statLabels = statNamesFile
+  .split("\n")
+  .map((l) => l.trim())
+  .filter((l) => l.length > 0);
+
+// Map stat label → camelCase key (non-obvious mappings explicit)
+const labelToKey: Record<string, string> = {
+  "ENEMY KILLS": "enemyKills",
+  "TERMINID KILLS": "terminidKills",
+  "AUTOMATON KILLS": "automatonKills",
+  "ILLUMINATE KILLS": "illuminateKills",
+  "FRIENDLY KILLS": "friendlyKills",
+  "GRENADE KILLS": "grenadeKills",
+  "MELEE KILLS": "meleeKills",
+  "EAGLE KILLS": "eagleKills",
+  DEATHS: "deaths",
+  "SHOTS FIRED": "shotsFired",
+  "SHOTS HIT": "shotsHit",
+  "ORBITALS USED": "orbitalsUsed",
+  "DEFENSIVE STRATS": "defensiveStratagems",
+  "EAGLE STRATS": "eagleStratagems",
+  "SUPPLY STRATS": "supplyStratagems",
+  "OBJECTIVES DONE": "objectivesCompleted",
+  "MISSIONS PLAYED": "missionsPlayed",
+  "MISSIONS WON": "missionsWon",
+  "TIME PLAYED": "inMissionTimeSeconds",
+  SAMPLES: "samplesCollected",
+  "TOTAL XP": "totalXp",
+};
+
+// Build an OCR-tolerant regex from an exact stat label.
+// Each word truncated to 3-4 char stem with lazy \w*? suffix, spaces become \s*.
+// Lazy matching prevents first word from consuming the second in merged OCR text.
+// "GRENADE KILLS" -> GREN\w*?\s*KIL\w* (matches GRENADEKILS)
+// "DEATHS" -> \bDEATH\w*
+function buildOcrRegex(label: string): RegExp {
+  const words = label.split(/\s+/);
+  if (words.length === 1) {
+    const stem = words[0].slice(0, Math.max(4, words[0].length - 1));
+    return new RegExp(`\\b${stem}\\w*`, "i");
+  }
+  const pattern = words
+    .map((w, i) => {
+      // Shorter stem (min 3) for better OCR tolerance with dropped letters
+      const stem = w.slice(0, Math.max(3, Math.min(4, w.length - 1)));
+      // Lazy on non-final words so they don't consume the next word in merged text
+      return i < words.length - 1 ? `${stem}\\w*?` : `${stem}\\w*`;
+    })
+    .join("\\s*");
+  return new RegExp(pattern, "i");
+}
+
+console.log("--- Stat labels loaded from data/stat_names.txt ---");
+console.log(`  ${statLabels.length} labels\n`);
 
 console.log(`\n=== Phase 0: OCR Feasibility Spike v2 ===`);
 console.log(`Image: ${imagePath}\n`);
@@ -69,119 +129,20 @@ for (let i = 0; i < cleanLines.length; i++) {
 console.log();
 
 // --- STAT EXTRACTION ---
-const statPatterns: Array<{
-  labels: RegExp[];
-  key: string;
-  isTime?: boolean;
-  expectedPosition?: number; // line index in the stat table (0-based from first stat)
-}> = [
-  {
-    labels: [/ENEMY\s*KILLS/i],
-    key: "enemyKills",
-    expectedPosition: 0,
-  },
-  {
-    labels: [/TERMINID\s*KILLS/i],
-    key: "terminidKills",
-    expectedPosition: 1,
-  },
-  {
-    labels: [/AUTOMATON\s*KILLS/i],
-    key: "automatonKills",
-    expectedPosition: 2,
-  },
-  {
-    labels: [/ILLUMINATE\s*KILLS/i, /ILLUMIN\w+\s*KILLS/i],
-    key: "illuminateKills",
-    expectedPosition: 3,
-  },
-  {
-    labels: [/FRIENDLY\s*KILLS/i],
-    key: "friendlyKills",
-    expectedPosition: 4,
-  },
-  {
-    labels: [/GRENAD\w*\s*KIL\w*/i],
-    key: "grenadeKills",
-    expectedPosition: 5,
-  },
-  {
-    labels: [/MELEE\s*KILLS/i],
-    key: "meleeKills",
-    expectedPosition: 6,
-  },
-  {
-    labels: [/EAGLE\s*KILLS/i],
-    key: "eagleKills",
-    expectedPosition: 7,
-  },
-  {
-    labels: [/\bDEATHS\b/i],
-    key: "deaths",
-    expectedPosition: 8,
-  },
-  {
-    labels: [/SHOTS?\s*FIRED/i, /SH\w*TS?\s*\w*I?R\w*D/i],
-    key: "shotsFired",
-    expectedPosition: 9,
-  },
-  {
-    labels: [/SHOTS?\s*HIT/i, /SH\w*TS?\s*HIT/i],
-    key: "shotsHit",
-    expectedPosition: 10,
-  },
-  {
-    labels: [/ORBITALS?\s*USED/i],
-    key: "orbitalsUsed",
-    expectedPosition: 11,
-  },
-  {
-    labels: [/DEFEN\w*\s*STRATS?/i],
-    key: "defensiveStratagems",
-    expectedPosition: 12,
-  },
-  {
-    labels: [/EAGLE\s*STRATS?/i],
-    key: "eagleStratagems",
-    expectedPosition: 13,
-  },
-  {
-    labels: [/SUPPLY\s*STRATS?/i],
-    key: "supplyStratagems",
-    expectedPosition: 14,
-  },
-  {
-    labels: [/OBJECTIVES?\s*DONE/i],
-    key: "objectivesCompleted",
-    expectedPosition: 15,
-  },
-  {
-    labels: [/MISSIONS?\s*PLAYED/i],
-    key: "missionsPlayed",
-    expectedPosition: 16,
-  },
-  {
-    labels: [/MISSIONS?\s*WON/i],
-    key: "missionsWon",
-    expectedPosition: 17,
-  },
-  {
-    labels: [/TIME\s*PLAYED/i],
-    key: "inMissionTimeSeconds",
-    isTime: true,
-    expectedPosition: 18,
-  },
-  {
-    labels: [/\bSAMPLES\b/i],
-    key: "samplesCollected",
-    expectedPosition: 19,
-  },
-  {
-    labels: [/TOTAL\s*XP/i],
-    key: "totalXp",
-    expectedPosition: 20,
-  },
-];
+// Build patterns dynamically from stat_names.txt
+const statPatterns = statLabels.map((label, index) => {
+  const key = labelToKey[label];
+  if (!key) throw new Error(`No key mapping for stat label: "${label}"`);
+  const regex = buildOcrRegex(label);
+  console.log(`  ${label} → /${regex.source}/i → ${key}`);
+  return {
+    label: regex,
+    key,
+    isTime: key === "inMissionTimeSeconds",
+    expectedPosition: index,
+  };
+});
+console.log();
 
 // Find where the stat table starts (first line with "ENEMY KILLS" or similar)
 const statTableStart = cleanLines.findIndex((l) =>
@@ -207,40 +168,36 @@ const extracted: Record<string, number> = {};
 const confidence: Record<string, "label" | "position"> = {};
 const issues: string[] = [];
 
-for (const { labels, key, isTime, expectedPosition } of statPatterns) {
+for (const { label, key, isTime, expectedPosition } of statPatterns) {
   let found = false;
 
   // Strategy 1: Match by label (primary)
-  for (const label of labels) {
-    const matchingLine = cleanLines.find((l) => label.test(l));
-    if (!matchingLine) continue;
-
+  const matchingLine = cleanLines.find((l) => label.test(l));
+  if (matchingLine) {
     const labelMatch = matchingLine.match(label);
-    if (!labelMatch || labelMatch.index === undefined) continue;
+    if (labelMatch && labelMatch.index !== undefined) {
+      const afterLabel = matchingLine.slice(
+        labelMatch.index + labelMatch[0].length
+      );
 
-    const afterLabel = matchingLine.slice(
-      labelMatch.index + labelMatch[0].length
-    );
-
-    if (isTime) {
-      const seconds = extractTime(afterLabel);
-      if (seconds !== null) {
-        extracted[key] = seconds;
-        confidence[key] = "label";
-        console.log(
-          `  ${key}: ${seconds}s (${(seconds / 3600).toFixed(1)}h) [label match] ✅`
-        );
-        found = true;
-        break;
-      }
-    } else {
-      const value = extractNumber(afterLabel);
-      if (value !== null) {
-        extracted[key] = value;
-        confidence[key] = "label";
-        console.log(`  ${key}: ${value} [label match] ✅`);
-        found = true;
-        break;
+      if (isTime) {
+        const seconds = extractTime(afterLabel);
+        if (seconds !== null) {
+          extracted[key] = seconds;
+          confidence[key] = "label";
+          console.log(
+            `  ${key}: ${seconds}s (${(seconds / 3600).toFixed(1)}h) [label match] ✅`
+          );
+          found = true;
+        }
+      } else {
+        const value = extractNumber(afterLabel);
+        if (value !== null) {
+          extracted[key] = value;
+          confidence[key] = "label";
+          console.log(`  ${key}: ${value} [label match] ✅`);
+          found = true;
+        }
       }
     }
   }
